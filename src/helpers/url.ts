@@ -1,5 +1,7 @@
-import { encode, isDate, isObject } from './util';
+import { encode, isDate, isPlainObject } from './util';
 
+
+// 处理URL
 export function buildURL(url: string, params?: any): string {
   if (!params) {
     return url
@@ -20,7 +22,7 @@ export function buildURL(url: string, params?: any): string {
     values.forEach(val => {
       if (isDate(val)) {
         val = val.toISOString()
-      } else if (isObject(val)) {
+      } else if (isPlainObject(val)) {
         val = JSON.stringify(val)
       }
       parts.push(`${encode(key)}=${encode(val)}`)
