@@ -10,6 +10,7 @@ function axios(config: AxiosRequestConfig): AxiosPromise {
   transformHeaders(config);
   // 处理data
   transformRequstData(config);
+  // xhr()函数返回的是一个AxiosPromise对象
   return xhr(config)
 }
 
