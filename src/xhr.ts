@@ -1,5 +1,6 @@
 import { AxiosRequestConfig, AxiosPromise, AxiosResponseConfig } from './types';
-import { parseHeaders } from './helpers/util'
+import { parseHeaders } from './helpers/util';
+import { createError } from './helpers/error'
 
 export default function xhr(config: AxiosRequestConfig): AxiosPromise {
   return new Promise((resolve, reject) => {
@@ -38,12 +39,16 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
 
     // 当网络异常时(比如不通)的时候,发送请求会触发XMLHttpRequest的error事件,于是我们可以在onerror的事件回调中捕获此类错误
     requst.onerror = () => {
-      reject(new Error('Network Error'))
+      // reject(new Error('Network Error'))
+      // 网络错误时获取不到response
+      reject(createError('Network Error', config, null, requst))
     }
 
     // 处理超时错误
     requst.ontimeout = () => {
-      reject(new Error(`Timeout of ${timeout}ms exceeded`))
+      // reject(new Error('Timeout of ${timeout}ms exceeded'))
+      // 超时也获取不到response  ECONNABORTED代表请求被终止
+      reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', requst))
     }
 
     // 假如data不是一个对象就不需要设置requstHeader
@@ -61,7 +66,9 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       if (response.status >= 200 && response.status <= 300) {
         resolve(response)
       } else {
-        reject(new Error(`Request failed with status code ${response.status}`))
+        // reject(new Error(`Request failed with status code ${response.status}`))
+        // 正常错误下可以拿到response
+        reject(createError(`Request failed with status code ${response.status}`, config, status, requst, response))
       }
     }
   })

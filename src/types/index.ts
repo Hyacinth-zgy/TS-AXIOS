@@ -25,3 +25,12 @@ export interface AxiosResponseConfig {
 
 // 响应参数Promise类型
 export interface AxiosPromise extends Promise<AxiosResponseConfig> { }
+
+// 错误类接口
+export interface AxiosError extends Error {
+    config: AxiosRequestConfig,
+    code?: number | string | null,
+    request?: any,
+    response?: AxiosResponseConfig,
+    isAxiosError: boolean
+}
