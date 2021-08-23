@@ -1,16 +1,16 @@
 import { buildURL } from './helpers/url';
-import { AxiosRequestConfig } from './types/index';
+import { AxiosRequestConfig, AxiosPromise } from './types/index';
 import { transformRequest } from './helpers/data'
 import xhr from './xhr';
 import { processHeaders } from './helpers/headers'
-function axios(config: AxiosRequestConfig): void {
+function axios(config: AxiosRequestConfig): AxiosPromise {
   // 处理了url
   processConfig(config);
   // 处理headers
   transformHeaders(config);
   // 处理data
   transformRequstData(config);
-  xhr(config)
+  return xhr(config)
 }
 
 function processConfig(config: AxiosRequestConfig): void {
