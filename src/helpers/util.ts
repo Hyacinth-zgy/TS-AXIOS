@@ -44,3 +44,13 @@ export function parseHeaders(headers: string): any {
   })
   return parsed
 }
+
+// 混合对象实现 
+// 混合对象实现思路很简单，首先这个对象是一个函数，其次这个对象要包括AXIOS类的所有原型属性和实例属性，编写编写辅助函数extend
+
+export function extend<T, U>(to: T, from: U): T & U {
+  for (const key in from) {
+    ; (to as T & U)[key] = from[key] as any
+  }
+  return to as T & U
+}
