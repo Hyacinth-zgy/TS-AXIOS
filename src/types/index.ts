@@ -50,4 +50,6 @@ export interface Axios {
 // AxiosIncetance是个混合对象，本身是个函数，但是也具有Axios定义的一些方法
 export interface AxiosIncetance extends Axios {
     (config: AxiosRequestConfig): AxiosPromise
+    // 函数重载
+    (url: string, config: AxiosRequestConfig): AxiosPromise
 }

@@ -1,9 +1,19 @@
+import { url } from "inspector";
 import { AxiosPromise, AxiosRequestConfig, Method } from "../types";
 import dispatchRequest from "./dispatchRequest";
 
 export default class Axios {
   // requst 函数实现
-  request(config: AxiosRequestConfig): AxiosPromise {
+  request(url: any, config?: any): AxiosPromise {
+    // 函数重载兼容
+    if (typeof url === 'string') {
+      if (!config) {
+        config = {}
+      }
+      config.url = url
+    } else {
+      config = url
+    }
     return dispatchRequest(config)
   }
 
