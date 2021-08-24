@@ -1,10 +1,10 @@
-export type MethodLo = 'get' | 'delete' | 'post' | 'put' | 'option';
-export type MethodUp = 'GET' | 'DELETE' | 'POST' | 'PUT' | 'OPTION';
+export type MethodLo = 'get' | 'delete' | 'post' | 'put' | 'options' | 'head' | 'patch';
+export type MethodUp = 'GET' | 'DELETE' | 'POST' | 'PUT' | 'OPTIONS' | 'HEAD' | 'PATCH';
 export type Method = MethodLo | MethodUp
 
 // 请求参数
 export interface AxiosRequestConfig {
-    url: string,
+    url?: string,
     method?: Method,
     data?: any
     params?: any,
@@ -33,4 +33,21 @@ export interface AxiosError extends Error {
     request?: any,
     response?: AxiosResponseConfig,
     isAxiosError: boolean
+}
+
+// Axios扩展接口
+export interface Axios {
+    request(config: AxiosRequestConfig): AxiosPromise;
+    get(url: string, config?: AxiosRequestConfig): AxiosPromise;
+    delete(url: string, config?: AxiosRequestConfig): AxiosPromise;
+    head(url: string, config?: AxiosRequestConfig): AxiosPromise;
+    options(url: string, config?: AxiosRequestConfig): AxiosPromise;
+    post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
+    put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
+    patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
+}
+
+// AxiosIncetance是个混合对象，本身是个函数，但是也具有Axios定义的一些方法
+export interface AxiosIncetance extends Axios {
+    (config: AxiosRequestConfig): AxiosPromise
 }
