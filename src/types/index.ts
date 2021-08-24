@@ -6,7 +6,7 @@ export type Method = MethodLo | MethodUp
 export interface AxiosRequestConfig {
     url?: string,
     method?: Method,
-    data?: any
+    data?: any,
     params?: any,
     headers?: any,
     responseType?: XMLHttpRequestResponseType, //设置响应类型
@@ -14,8 +14,8 @@ export interface AxiosRequestConfig {
 }
 
 // 响应参数类型
-export interface AxiosResponseConfig {
-    data: any,
+export interface AxiosResponseConfig<T = any> {
+    data: T,
     status: number,
     statusText: string,
     headers: any,// 响应头
@@ -24,7 +24,7 @@ export interface AxiosResponseConfig {
 }
 
 // 响应参数Promise类型
-export interface AxiosPromise extends Promise<AxiosResponseConfig> { }
+export interface AxiosPromise<T = any> extends Promise<AxiosResponseConfig<T>> { }
 
 // 错误类接口
 export interface AxiosError extends Error {
@@ -37,19 +37,19 @@ export interface AxiosError extends Error {
 
 // Axios扩展接口
 export interface Axios {
-    request(config: AxiosRequestConfig): AxiosPromise;
-    get(url: string, config?: AxiosRequestConfig): AxiosPromise;
-    delete(url: string, config?: AxiosRequestConfig): AxiosPromise;
-    head(url: string, config?: AxiosRequestConfig): AxiosPromise;
-    options(url: string, config?: AxiosRequestConfig): AxiosPromise;
-    post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
-    put(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
-    patch(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise;
+    request<T = any>(config: AxiosRequestConfig): AxiosPromise<T>;
+    get<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+    delete<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+    head<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+    options<T = any>(url: string, config?: AxiosRequestConfig): AxiosPromise<T>;
+    post<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+    put<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
+    patch<T = any>(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise<T>;
 }
 
 // AxiosIncetance是个混合对象，本身是个函数，但是也具有Axios定义的一些方法
 export interface AxiosIncetance extends Axios {
-    (config: AxiosRequestConfig): AxiosPromise
+    <T = any>(config: AxiosRequestConfig): AxiosPromise<T>
     // 函数重载
-    (url: string, config: AxiosRequestConfig): AxiosPromise
+    <T = any>(url: string, config: AxiosRequestConfig): AxiosPromise<T>
 }
