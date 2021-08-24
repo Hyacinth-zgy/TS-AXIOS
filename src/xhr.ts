@@ -12,6 +12,10 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
       requst.responseType = responseType;
     }
 
+    // 设置超时时间
+    if (timeout) {
+      requst.timeout = timeout
+    }
     requst.open(method.toUpperCase(), url, true);
 
     requst.onreadystatechange = () => {
@@ -47,7 +51,7 @@ export default function xhr(config: AxiosRequestConfig): AxiosPromise {
     // 处理超时错误
     requst.ontimeout = () => {
       // reject(new Error('Timeout of ${timeout}ms exceeded'))
-      // 超时也获取不到response  ECONNABORTED代表请求被终止
+      // 超时也获取不到response  ECONNABORTED代表请求被终止;
       reject(createError(`Timeout of ${timeout}ms exceeded`, config, 'ECONNABORTED', requst))
     }
 
