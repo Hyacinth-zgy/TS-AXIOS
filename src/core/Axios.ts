@@ -1,32 +1,38 @@
-import { promises } from "dns";
-import { url } from "inspector";
-import { AxiosPromise, AxiosRequestConfig, AxiosResponseConfig, Method, RejectedFn, ResolvedFn } from "../types";
-import dispatchRequest from "./dispatchRequest";
+import { promises } from 'dns'
+import { url } from 'inspector'
+import {
+  AxiosPromise,
+  AxiosRequestConfig,
+  AxiosResponseConfig,
+  Method,
+  RejectedFn,
+  ResolvedFn
+} from '../types'
+import dispatchRequest from './dispatchRequest'
 import InterceptorManager from './interceptorManager'
 
 interface Interceptors {
-  request: InterceptorManager<AxiosRequestConfig>,
+  request: InterceptorManager<AxiosRequestConfig>
   response: InterceptorManager<AxiosResponseConfig>
 }
 
 interface PromiseChain<T> {
-  resolved: ResolvedFn<T> | ((config: AxiosRequestConfig) => AxiosPromise),
+  resolved: ResolvedFn<T> | ((config: AxiosRequestConfig) => AxiosPromise)
   rejected?: RejectedFn
 }
 export default class Axios {
-
+  // 初始化config配置
+  defaults: AxiosRequestConfig
   // 拦截器属性
-  interceptors: Interceptors;
-  constructor() {
+  interceptors: Interceptors
+  constructor(initConfig: AxiosRequestConfig) {
+    // 在Axios构造时传入默认配置对象
+    this.defaults = initConfig
     this.interceptors = {
       request: new InterceptorManager<AxiosRequestConfig>(),
       response: new InterceptorManager<AxiosResponseConfig>()
     }
   }
-
-
-
-
 
   // requst 函数实现
   request(url: any, config?: any): AxiosPromise {
@@ -41,10 +47,12 @@ export default class Axios {
     }
 
     // 链式调用中的一堆拦截器和初始值
-    const chain: PromiseChain<any>[] = [{
-      resolved: dispatchRequest,
-      rejected: undefined
-    }]
+    const chain: PromiseChain<any>[] = [
+      {
+        resolved: dispatchRequest,
+        rejected: undefined
+      }
+    ]
 
     // 后添加先执行 数据调用
     this.interceptors.request.forEach(interceptor => {
@@ -56,13 +64,12 @@ export default class Axios {
     let promise = Promise.resolve(config)
     while (chain.length) {
       // ! 断言，表示部不为空
-      const { resolved, rejected } = chain.shift()!;
+      const { resolved, rejected } = chain.shift()!
       promise = promise.then(resolved, rejected)
     }
     // return dispatchRequest(config)
-    return promise;
+    return promise
   }
-
 
   // 暴露get方法，实际内部调用的是requst
   get(url: string, config?: AxiosRequestConfig): AxiosPromise {
@@ -81,10 +88,12 @@ export default class Axios {
     return this._requsetMetholdWidthoutData('options', url, config)
   }
   _requsetMetholdWidthoutData(method: Method, url: string, config?: AxiosRequestConfig) {
-    return this.request(Object.assign(config || {}, {
-      method,
-      url
-    }))
+    return this.request(
+      Object.assign(config || {}, {
+        method,
+        url
+      })
+    )
   }
   post(url: string, data?: any, config?: AxiosRequestConfig): AxiosPromise {
     return this._requsetMetholdWidthData('post', url, data, config)
@@ -99,10 +108,12 @@ export default class Axios {
   }
 
   _requsetMetholdWidthData(method: Method, url: string, data?: any, config?: AxiosRequestConfig) {
-    return this.request(Object.assign(config || {}, {
-      method,
-      url,
-      data
-    }))
+    return this.request(
+      Object.assign(config || {}, {
+        method,
+        url,
+        data
+      })
+    )
   }
 }
