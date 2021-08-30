@@ -10,6 +10,7 @@ import {
 } from '../types'
 import dispatchRequest from './dispatchRequest'
 import InterceptorManager from './interceptorManager'
+import mergeConfig from './mergeConfig'
 
 interface Interceptors {
   request: InterceptorManager<AxiosRequestConfig>
@@ -33,7 +34,7 @@ export default class Axios {
       response: new InterceptorManager<AxiosResponseConfig>()
     }
   }
-
+  config = mergeConfig(this, this.defaults)
   // requst 函数实现
   request(url: any, config?: any): AxiosPromise {
     // 函数重载兼容

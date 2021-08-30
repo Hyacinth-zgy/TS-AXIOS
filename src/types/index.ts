@@ -11,6 +11,7 @@ export interface AxiosRequestConfig {
   headers?: any
   responseType?: XMLHttpRequestResponseType //设置响应类型
   timeout?: number
+  [propName: string]: any
 }
 
 // 响应参数类型
