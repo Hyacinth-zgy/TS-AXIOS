@@ -34,8 +34,6 @@ export default class Axios {
       response: new InterceptorManager<AxiosResponseConfig>()
     }
   }
-  config = mergeConfig(this, this.defaults)
-  // requst 函数实现
   request(url: any, config?: any): AxiosPromise {
     // 函数重载兼容
     if (typeof url === 'string') {
@@ -46,7 +44,9 @@ export default class Axios {
     } else {
       config = url
     }
-
+    config = mergeConfig(this.defaults, config)
+    config.method = config.method.toLowerCase()
+    // // requst 函数实现
     // 链式调用中的一堆拦截器和初始值
     const chain: PromiseChain<any>[] = [
       {

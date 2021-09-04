@@ -1,21 +1,19 @@
-import { utimes } from 'fs'
-
 import { AxiosRequestConfig } from '../types'
 import { deepMerge, isPlainObject } from '../helpers/util'
 
 const strats = Object.create(null)
 
-function defaultStrat(val1: unknown, val2: unknown): unknown {
-  return typeof val1 !== 'undefined' ? val1 : val2
+function defaultStrat(val1: any, val2: any): any {
+  return typeof val2 !== 'undefined' ? val2 : val1
 }
 
-function fromVal2Strat(val1: unknown, val2: unknown): any {
+function fromVal2Strat(val1: any, val2: any): any {
   if (typeof val2 !== 'undefined') {
     return val2
   }
 }
 
-function deepMergeStrat(val1: unknown, val2: unknown): unknown {
+function deepMergeStrat(val1: any, val2: any): any {
   if (isPlainObject(val2)) {
     return deepMerge(val1, val2)
   } else if (typeof val2 !== 'undefined') {

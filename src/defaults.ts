@@ -15,7 +15,7 @@ metholdsNoData.forEach(methold => {
   defaults.headers[methold] = {}
 })
 
-const metholdsWidthData = ['post', 'put', 'pathc']
+const metholdsWidthData = ['post', 'put', 'path']
 metholdsWidthData.forEach(methold => {
   defaults.headers[methold] = {
     'Content-Type': 'application/x-www-form-urlencode'

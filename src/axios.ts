@@ -1,15 +1,16 @@
-import Axios from './core/Axios';
-import { AxiosIncetance } from './types';
+import Axios from './core/Axios'
+import { AxiosIncetance, AxiosRequestConfig } from './types'
 import { extend } from './helpers/util'
+import defaults from './defaults'
 
 // 使用工厂模式函数创建axios实例
-function createInstance(): AxiosIncetance {
-  const context = new Axios();
-  const inctance = Axios.prototype.request.bind(context);
+function createInstance(config: AxiosRequestConfig): AxiosIncetance {
+  const context = new Axios(config)
+  const inctance = Axios.prototype.request.bind(context)
   // 混合
-  extend(inctance, context);
+  extend(inctance, context)
   return inctance as AxiosIncetance
 }
-
-const axios = createInstance();
+console.log('6', defaults)
+const axios = createInstance(defaults)
 export default axios

@@ -32,15 +32,17 @@ export function parseHeaders(headers: string): any {
   if (!headers) {
     return parsed
   }
+
   headers.split('\r\n').forEach(line => {
-    let [key, val] = line.split(':')
+    let [key, ...vals] = line.split(':')
     key = key.trim().toLowerCase()
-    if (!key) return
-    if (val) {
-      val = val.trim()
+    if (!key) {
+      return
     }
+    const val = vals.join(':').trim()
     parsed[key] = val
   })
+
   return parsed
 }
 
@@ -55,10 +57,11 @@ export function extend<T, U>(to: T, from: U): T & U {
 }
 
 // 深度合并对象
-export function deepMerge(...objs: Array<any>): any {
+export function deepMerge(...objs: any[]): any {
   const result = Object.create(null)
+
   objs.forEach(obj => {
-    obj &&
+    if (obj) {
       Object.keys(obj).forEach(key => {
         const val = obj[key]
         if (isPlainObject(val)) {
@@ -71,5 +74,8 @@ export function deepMerge(...objs: Array<any>): any {
           result[key] = val
         }
       })
+    }
   })
+
+  return result
 }
