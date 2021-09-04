@@ -62,6 +62,10 @@ export interface AxiosIncetance extends Axios {
   <T = any>(url: string, config: AxiosRequestConfig): AxiosPromise<T>
 }
 
+export interface AxiosStatic extends AxiosIncetance {
+  create(config?: AxiosRequestConfig): AxiosIncetance
+}
+
 // 拦截器接口定义
 export interface AxiosIntercepterManager<T> {
   use(resolved: ResolvedFn<T>, rejected?: RejectedFn): number
