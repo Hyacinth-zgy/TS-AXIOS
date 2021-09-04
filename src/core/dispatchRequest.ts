@@ -3,6 +3,7 @@ import { AxiosRequestConfig, AxiosPromise, AxiosResponseConfig } from '../types/
 import { transformRequest, transformResponseData } from '../helpers/data'
 import xhr from './xhr'
 import { processHeaders, flattenHeaders } from '../helpers/headers'
+// import transfrom from './transform'
 export default function dispatchRequest(config: AxiosRequestConfig): AxiosPromise {
   // 处理了url
   processConfig(config)
