@@ -84,3 +84,16 @@ export interface RejectedFn {
 export interface AxiosTransformer {
   (data: any, headers?: any): any
 }
+
+// 本身会被人会是个函数定义
+export interface add {
+  add(data: string): string
+  age: string
+}
+
+const a: add = {
+  add(data) {
+    return '111'
+  },
+  age: '12'
+}
